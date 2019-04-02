@@ -16,7 +16,7 @@ public class MatrixString extends Thread implements Runnable{
 	
 	private int startingPosY = 0;
 	private int posY = 0;
-	private int yspeed = 3;
+	private int yspeed = 1;
 	
 	//getter & setter
 	public boolean getRunning() { return this.running; }

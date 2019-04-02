@@ -23,6 +23,8 @@ public class Container extends JPanel implements ActionListener{
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
 	
+	private int test;
+	
 	private GamestateEnum gamestate;
 	
 	//getter & setter
@@ -35,6 +37,7 @@ public class Container extends JPanel implements ActionListener{
 	public Timer getTimer() { return this.timer; }
 	
 	public Container() {
+		
 		this.fontUtils = new FontUtils();
 		this.fileUtils = new FileUtils();
 		
@@ -44,7 +47,7 @@ public class Container extends JPanel implements ActionListener{
 		this.startscreen = new Startscreen(this);
 		this.game = new Game(this);
 		
-		this.timer = new Timer(16, new ActionListener() {
+		this.timer = new Timer(1, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -91,6 +94,8 @@ public class Container extends JPanel implements ActionListener{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 		
 		if(this.gamestate == GamestateEnum.startscreen) {
 			
