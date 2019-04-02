@@ -24,6 +24,7 @@ public class Container extends JPanel implements ActionListener{
 	private FileUtils fileUtils;
 	
 	private int test;
+	private int doItKai;
 	
 	private GamestateEnum gamestate;
 	
