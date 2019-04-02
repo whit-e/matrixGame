@@ -21,6 +21,7 @@ public class Container extends JPanel implements ActionListener{
 	private String testString; 
 	private int testInt;
 	private boolean testBool;
+	private String secondTestString = "this is a second test";
 	
 	private Settings settings;
 	private Startscreen startscreen;
