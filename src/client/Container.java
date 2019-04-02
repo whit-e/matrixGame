@@ -26,6 +26,7 @@ public class Container extends JPanel implements ActionListener{
 	private int test;
 	private int doItKai;
 	private int iDidItMax;
+	private int justDIDIT;
 	
 	private GamestateEnum gamestate;
 	
