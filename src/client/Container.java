@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import server.Client;
+import server.Server;
 import utils.FileUtils;
 import utils.FontUtils;
 
@@ -23,12 +25,10 @@ public class Container extends JPanel implements ActionListener{
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
 	
-	private int test;
-	private int doItKai;
-	private int iDidItMax;
-	private int justDIDIT;
-	
 	private GamestateEnum gamestate;
+	
+	private Server server;
+	private Client client;
 	
 	//getter & setter
 	public Settings getSettings() { return this.settings; }
@@ -41,6 +41,7 @@ public class Container extends JPanel implements ActionListener{
 	
 	public Container() {
 		
+		//initializing the attributes
 		this.fontUtils = new FontUtils();
 		this.fileUtils = new FileUtils();
 		
@@ -50,12 +51,18 @@ public class Container extends JPanel implements ActionListener{
 		this.startscreen = new Startscreen(this);
 		this.game = new Game(this);
 		
+		
+		this.server = new Server();
+		
+		
 		this.timer = new Timer(1, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
 			}
 		}); 
+		// ------------------------
+		
 		timer.start();
 		
 		//stateChange is called here because initially the state is changed from nothing to startscreen
@@ -78,6 +85,8 @@ public class Container extends JPanel implements ActionListener{
 		else if(this.gamestate == GamestateEnum.game) {
 			startscreen.removeComponents();
 			
+			client = new Client();
+			
 			game.addComponents();
 			game.start();
 		}
@@ -90,16 +99,21 @@ public class Container extends JPanel implements ActionListener{
 	
 	/**
 	 * this method is called every x seconds (caused by the timer)
+	 * calls the paint method of the different gamestates
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		Graphics2D g2d = (Graphics2D) g;
+		
+		//activate antialising
 		g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
+		//---------------------
 		
+		//paint the components 
 		if(this.gamestate == GamestateEnum.startscreen) {
 			
 		} 
