@@ -16,7 +16,12 @@ import utils.FontUtils;
 public class Container extends JPanel implements ActionListener{
 	
 	private Timer timer;
+	
+	//This is a testThing
 	private String testString; 
+	private int testInt;
+	private boolean testBool;
+	
 	private Settings settings;
 	private Startscreen startscreen;
 	private Game game;
