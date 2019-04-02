@@ -44,7 +44,7 @@ public class Container extends JPanel implements ActionListener{
 		this.startscreen = new Startscreen(this);
 		this.game = new Game(this);
 		
-		this.timer = new Timer(20, new ActionListener() {
+		this.timer = new Timer(16, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -59,9 +59,9 @@ public class Container extends JPanel implements ActionListener{
 	}
 	
 	/**
-	 * this method is only called, if a state has been changed
-	 * it removes the components of the last state and adds the ones of the new one
-	 * also does some other things such as preparing everything for a game start on state change
+	 * this method is only called, if a state (e.g. from startscreen to game state) has been changed
+	 * it removes the components of the last state and adds the ones of the new one.
+	 * Also does some other things such as preparing everything for a game start on state change = game
 	 */
 	private void stateChange() {
 		if(this.gamestate == GamestateEnum.startscreen) {
@@ -111,6 +111,7 @@ public class Container extends JPanel implements ActionListener{
 		} 
 		else if(e.getActionCommand() == "Menu") {
 			this.gamestate = GamestateEnum.startscreen;
+			
 			game.stop();
 			stateChange();
 		} 
