@@ -10,35 +10,37 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-	
-	ServerSocket server;
-	Socket client;
-	
-	public Server() {
-		
+
+	public static void main(String[] args) {
 		try {
+					
+			ServerSocket server = new ServerSocket(8080);
 			
-			this.server = new ServerSocket(1337);
+			System.out.println("Server gestartet");
 			
-			this.client = server.accept();
-			
-			OutputStream out = this.client.getOutputStream();
-			PrintWriter writer = new PrintWriter(out);
-			
-			InputStream in = this.client.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			
-			String incomingText = null;
-			
-			while((incomingText = reader.readLine()) != null) {
-				System.out.println(incomingText);
+			while(true) {
+				Socket client = server.accept();
+				
+				OutputStream out = client.getOutputStream();
+				PrintWriter writer = new PrintWriter(out);
+				
+				InputStream in = client.getInputStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+				
+				String incomingText = null;
+				
+				while((incomingText = reader.readLine()) != null) {
+					System.out.println(incomingText);
+				}
+				
+				writer.close();
+				reader.close();
 			}
 			
-			writer.close();
-			reader.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 }

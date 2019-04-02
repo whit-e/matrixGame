@@ -17,7 +17,7 @@ public class Client {
 		
 		try {
 			
-			this.client = new Socket("", 1337);
+			this.client = new Socket("localhost", 8080);
 			
 			OutputStream out = this.client.getOutputStream();
 			PrintWriter writer = new PrintWriter(out);
@@ -25,7 +25,7 @@ public class Client {
 			InputStream in = this.client.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			
-			writer.println("Hallo");
+			writer.println("Hallo lololol");
 			writer.flush();
 			
 			writer.close();

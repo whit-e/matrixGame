@@ -26,8 +26,6 @@ public class Container extends JPanel implements ActionListener{
 	private FileUtils fileUtils;
 	
 	private GamestateEnum gamestate;
-	
-	private Server server;
 	private Client client;
 	
 	//getter & setter
@@ -50,9 +48,6 @@ public class Container extends JPanel implements ActionListener{
 		this.settings = new Settings();
 		this.startscreen = new Startscreen(this);
 		this.game = new Game(this);
-		
-		
-		this.server = new Server();
 		
 		
 		this.timer = new Timer(1, new ActionListener() {
