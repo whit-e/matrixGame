@@ -15,8 +15,8 @@ public class MatrixString extends Thread implements Runnable{
 	private boolean running;
 	
 	private int startingPosY = 0;
-	private int posY;
-	private int yspeed = 1;
+	private int posY = 0;
+	private int yspeed = 3;
 	
 	//getter & setter
 	public boolean getRunning() { return this.running; }
@@ -57,28 +57,28 @@ public class MatrixString extends Thread implements Runnable{
 	public void renderWord(Graphics g) {
 		//getting the font used for our matrix string
 		Font font = this.game.getContainer().getFontUtils().getMatrixFont();
-		int initialPosY = 0;
-		this.posY = initialPosY + yspeed;
-		
-		
+
 		//getting the wordheight, to then calculate a random starting point
 		//which should be out of the screen --> this is done, so that every matrix string comes
 		//down at a different time
-		if(startingPosY == 0) {
+		if(this.startingPosY == 0) {
 			int wordHeight = g.getFontMetrics().getHeight() * (shuffeledWord.length()+1);
 			startingPosY = -(new Random().nextInt(wordHeight) + wordHeight*2);
-			this.posY = startingPosY;
+			this.posY = this.startingPosY;
+		}
+		
+		if(posY > game.getContainer().getSettings().getResolution().getHeight()) {
+			this.posY = this.startingPosY;
 		}
 		
 		char[] wordArray = shuffeledWord.toCharArray();
 		for(int i = 0; i < shuffeledWord.length(); i++) {
 			g.setColor(Color.BLACK);
 			g.setFont(font);
-			g.drawString("" + wordArray[i], 100, posY += g.getFontMetrics().getHeight() - g.getFontMetrics().getDescent());
-			if(i == 0) {
-				initialPosY = posY;
-			}
+			g.drawString("" + wordArray[i], 100, posY + g.getFontMetrics().getHeight()  * (i+1) - g.getFontMetrics().getDescent());
 		}
+		
+		this.posY = this.posY+ this.yspeed;
 		
 	}
 
