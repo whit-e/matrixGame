@@ -17,7 +17,7 @@ public class Client {
 		
 		try {
 			
-			this.client = new Socket("localhost", 8080);
+			this.client = new Socket("localhost", Server.serverPort);
 			
 			OutputStream out = this.client.getOutputStream();
 			PrintWriter writer = new PrintWriter(out);

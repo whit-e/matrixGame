@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import server.Client;
-import server.Server;
 import utils.FileUtils;
 import utils.FontUtils;
 
@@ -22,15 +20,16 @@ public class Container extends JPanel implements ActionListener{
 	private Settings settings;
 	private Startscreen startscreen;
 	private Game game;
+	private RegisterScreen registerscreen;
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
 	
 	private GamestateEnum gamestate;
-	private Client client;
 	
 	//getter & setter
 	public Settings getSettings() { return this.settings; }
 	public Startscreen getStartscreen() { return this.startscreen; }
+	public RegisterScreen getRegisterscreen() { return this.registerscreen; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
 	public FileUtils getFileUtils() { return this.fileUtils; }
 	
@@ -47,6 +46,7 @@ public class Container extends JPanel implements ActionListener{
 		
 		this.settings = new Settings();
 		this.startscreen = new Startscreen(this);
+		this.registerscreen = new RegisterScreen(this);
 		this.game = new Game(this);
 		
 		
@@ -80,10 +80,12 @@ public class Container extends JPanel implements ActionListener{
 		else if(this.gamestate == GamestateEnum.game) {
 			startscreen.removeComponents();
 			
-			client = new Client();
-			
 			game.addComponents();
 			game.start();
+		} else if(this.gamestate == GamestateEnum.registerscreen) {
+			startscreen.removeComponents();
+			
+			registerscreen.addComponents();
 		}
 
 		//repaint and revalidate need to be called in order to 
@@ -114,6 +116,8 @@ public class Container extends JPanel implements ActionListener{
 		} 
 		else if(this.gamestate == GamestateEnum.game) {
 			game.paintComponent(g2d);
+		} else if(this.gamestate == GamestateEnum.registerscreen) {
+			
 		}
 	}
 	
@@ -122,17 +126,20 @@ public class Container extends JPanel implements ActionListener{
 		//checks which button has been clicked to then change the
 		//gamestate and invoke the method stateChange which will
 		//add and remove the compontens for the current gamestate
+		
 		if(e.getActionCommand() == "Start Game") {
 			this.gamestate = GamestateEnum.game;
-			stateChange();
 		} 
 		else if(e.getActionCommand() == "Menu") {
 			this.gamestate = GamestateEnum.startscreen;
 			
 			game.stop();
-			stateChange();
-		} 
+		} else if(e.getActionCommand().equals(startscreen.getRegisterBtn().getText())) {
+			this.gamestate = GamestateEnum.registerscreen;
+			
+		}
 		
+		stateChange();
 		System.out.println(e.getActionCommand());
 	}
 }
