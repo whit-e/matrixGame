@@ -1,8 +1,5 @@
 package server;
 
-
-import java.util.ArrayList;
-
 public class PasswortDecrypter {
 /*
  * Benötigt das Passwort beim erstellen der Klasse
