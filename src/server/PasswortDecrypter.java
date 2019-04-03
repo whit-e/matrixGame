@@ -4,135 +4,111 @@ package server;
 import java.util.ArrayList;
 
 public class PasswortDecrypter {
+/*
+ * Benötigt das Passwort beim erstellen der Klasse
+ */
+	private String password;
 	public PasswortDecrypter(String pw) {
-		//gebe Passwort an erste Instanz (padding)
 		padPw(pw);
 	}
-	private final int length = 184;
-
-	public static void main(String[] args) {
-		new PasswortDecrypter("testPasswr458!");
-		
-	}
-	
-	//Padding Methode (Verlängerung des Passwortes auf XXX zeichen
-	private String padPw(String pw) {
-		//Padding des pw auf 160 zeichen 
+	//Wandelt das passwort ins Binärsystem um und padded es auf 512 zeichen
+	private void padPw(String pw) {
+		final int length = 512;
+		String binärPw = convertPwToBin(pw);
 		char[] paddedPW = new char[length];
-		int counter = 171;
-		for(int i = pw.length()-1;i>=0;i--) {
-		paddedPW[counter] = pw.charAt(i);
-		counter--;
-		}
-		for(int i = counter;i>=0;i--) {
-			paddedPW[i] = '0';
-		}
-		counter = 0;
-		return splitArray(paddedPW);
-	}
-
-	//Splittung des passwortes in 2 gleich große teile 
-	private String splitArray(char[] paddedPW) {
-		char[] frontSplit = new char[length/2];
-		char[] backSplit = new char[length/2];
-		int counterFront = 0;
-		int counterBack = 0;
-		for(int i = 0; i < paddedPW.length ; i++) {
-			if(i%2 == 1) {
-				frontSplit[counterFront] = paddedPW[i];
-				counterFront++;
-			}else {
-				backSplit[counterBack] = paddedPW[i];
-				counterBack++;
+		int countedLength = length-1;
+		int spaceToFill = length-((length/binärPw.length())*binärPw.length());   //restliche noch zu füllenden zeichen im charArray
+		for(int i = 0; i < length/binärPw.length(); i++) {
+			for(int j = 0; j < binärPw.length(); j++) {
+				paddedPW[countedLength--] = binärPw.charAt(j); 
 			}
 		}
-		return transferToHex(frontSplit, backSplit);
-	}
-	//Verrechnung der 2 teile in Hexadezimal jedes array  = länge 80
-	private String transferToHex(char[] frontSplit, char[] backSplit) {
-		ArrayList<String> frontHex = convertString(frontSplit); 				//80x32er länge -> 4rer blöcke 
-		ArrayList<String> backHex = convertString(backSplit); 					//80x32er Länge -> 4rer blöcke
-		//Erzeuge 32er Blöcke 
-		frontHex = convertToHexBlocks(frontHex);
-		backHex = convertToHexBlocks(backHex);
-		
-		System.out.println(frontHex.size());
-		System.out.println(backHex.size());
-		
-		ArrayList<String> switchedBackHex = new ArrayList<>();
-		
-		System.out.println("umdrehung");
-		for(int i = 0 ; i < backHex.size()-1;i++) {
-			String s = backHex.get(i);
-			System.out.println(i);
-			System.out.println(s+"    "+s.length());
-			System.out.println(Long.toBinaryString(Integer.toUnsignedLong(~Integer.valueOf(s)) | 0x100000000L ).substring(1));
-			switchedBackHex.add(Long.toBinaryString(Integer.toUnsignedLong(~Integer.valueOf(s)) | 0x100000000L ).substring(1));
+		int lengthOfBinPw = binärPw.length()-1;
+		for(int i = spaceToFill; i >= 0; i--) {
+			paddedPW[i] = binärPw.charAt(lengthOfBinPw--);
 		}
-		for(int i = 0 ; i < frontHex.size();i++) {
-			System.out.println("front: \t"+frontHex.get(i));
-			System.out.println("back: \t"+backHex.get(i));
-		}
-		return null;
+		changeToString(paddedPW, length);
 	}
-	
-	//rechnet die 32er bitBlöcke in hexadezimal um 
-	private ArrayList<String> convertToHexBlocks(ArrayList<String> list) {
-		ArrayList<String> hexList = new ArrayList<>();
-		//Hier sollte nun die berechnung eingeleitet werden
-		for(int i = 0; i < list.size()-4;i+=4) {
-				hexList.add(berechneHexWert(list.get(i),list.get(i+1),list.get(i+2),list.get(i+3),list.get(i+4)));
-		}
-		return hexList;
-	}
-
-	
-	
-	
-	private String berechneHexWert(String a, String b, String c, String d, String e) {
-		Integer parsed = Integer.parseUnsignedInt(a)^Integer.parseUnsignedInt(b);
-		String test1 = Long.toBinaryString(Integer.toUnsignedLong(Integer.valueOf(parsed)) | 0x100000000L ).substring(1);
-//		System.out.println("parsed: "+parsed);
-//		System.out.println("long : "+test1+"  Länge: "+test1.length());
-		
-		return test1;
-	}
-
-	//5 Arrayeinträge mit je 16 werten
-	private ArrayList<String> convertString(char[] array) {
-		ArrayList<String> testList = new ArrayList<>();
-		for(int i = 0; i < array.length;i++) {
-			testList.add(Long.toBinaryString(Integer.toUnsignedLong(Integer.valueOf(array[i])) | 0x100000000L ).substring(1));
-		}
-		return testList;
-	}
-	//Setzt die 4er Strings zu 32er blöcken zusammen
-	private ArrayList<String> get32erBlocks(ArrayList<String> transformable){
-		ArrayList<String> transformedList = new ArrayList<>();
+	//Wandelt den String ins binärsystem um 
+	private String convertPwToBin(String pw) {
 		StringBuilder sb = new StringBuilder();
-		for(int i = 1; i < transformable.size();i++) {
-			sb = sb.append(transformable.get(i));
-			if(i%4==0) {
-				transformedList.add(sb.toString());
+		for(char c: pw.toCharArray()) {
+			sb = sb.append(Integer.toBinaryString(Integer.valueOf(c)));
+		}
+		System.out.println(sb.toString().length());
+		return sb.toString();
+	}
+	//Wandelt das char[] in ein String[] um 
+	private void changeToString(char[] paddedPW, final int length) {
+		String[] binString = new String[(length/32)-1];
+		int counter = 0;
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < paddedPW.length ; i++) {
+			if(i!=0) {
+				sb = sb.append(paddedPW[i]);
+			}
+			if(i%32==0&&i!=0) {
+				binString[counter++] = sb.toString();
 				sb = new StringBuilder();
 			}
 		}
-		return transformedList;
+		SplitArrayInHalf(binString);
 	}
-	
-	
-	private ArrayList<String> splitIntoBlocks(ArrayList<String> list){
-		ArrayList<String> splittetList = new ArrayList<>();
-		for(String s :list) {
-			for(int i = 1; i < s.length();i++) {
-				if(i%4==0) {
-					splittetList.add(s.substring(i, i+4));
+	//jedes Array-Element wird in der mitte gespalten und auf einer der beiden Liste übergeben
+	private void SplitArrayInHalf(String[] binString) {
+		String[] firstHalf = new String[binString.length];
+		String[] secondHalf = new String[binString.length];
+		int counter = 0;
+		for(String s :binString) {
+			firstHalf[counter] = s.substring(0,s.length()/2);
+			secondHalf[counter++] = s.substring(s.length()/2,s.length());
+		}
+		secondHalf = bitFlipping(secondHalf);
+		for(int i = 0; i < firstHalf.length;i++) {
+		}
+		settleTheBinCode(firstHalf, secondHalf);
+	}
+	//Flippt jedes Bit
+	private String[] bitFlipping(String[] secondHalf) {
+		String[] flipped = new String[secondHalf.length];
+		int counter = 0;
+		StringBuilder sb = new StringBuilder();
+		for(String s: secondHalf) {
+			for(int i = 0 ; i < s.length(); i++) {
+				if(s.charAt(i)=='1') {
+					sb = sb.append(0);
+				}else {
+					sb = sb.append(1);
 				}
 			}
+			flipped[counter++] = sb.toString();
+			sb = new StringBuilder();
 		}
-		return splittetList;
+		return flipped;
+	}
+	//Verrechnung der 2 teile in Hexadezimal
+	private void settleTheBinCode(String[] frontSplit, String[] backSplit) {
+		String[] xOrArray = new String[frontSplit.length]; 					//Länge -> 15 je 16 werte = 240 werte
+		for(int i = 0 ; i < frontSplit.length;i++) {
+			StringBuilder sb = new StringBuilder();
+			for(int j = 0; j < frontSplit[i].length();j++) {
+					//XOR
+					if((frontSplit[i].charAt(j)=='0'&& backSplit[i].charAt(j)=='0')||(frontSplit[i].charAt(j)=='1'&&backSplit[i].charAt(j)=='1')){
+						sb = sb.append('0');
+					}else {
+						sb = sb.append('1');
+					}
+			}
+			xOrArray[i] = sb.toString();
+		}
+		createHexCode(xOrArray);
+	}
+	//Kreiert aus dem String[] eine Hexadezimalzahl
+	private void createHexCode(String[] xOrArray) {
+		StringBuilder sb = new StringBuilder();
+		for(String s: xOrArray) {sb = sb.append(Integer.toHexString(Integer.parseInt(s,2)));}
+		this.password = sb.toString();
 	}
 	
-	//rückgabe 
-	
+	public String getPassword() {return this.password;};
 }
