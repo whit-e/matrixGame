@@ -6,19 +6,28 @@ package server;
  */
 
 public class User {
+	public User(String userName, int gamesPlayed, int timePlayed, int gamesWon, boolean active) {
+		this.userName= userName;
+		this.gamesWon = gamesWon;
+		this.timePlayed = timePlayed;
+		this.gamesPlayed = gamesPlayed;
+		this.active = active;
+	}
 	//Attribute
-	private String userName;
+	private final String userName;
 	private int gamesPlayed;
 	private int gamesWon;
 	private int timePlayed;
 	private boolean active;
 	//Getter&Setter
 	public String getUserName() {return this.userName;}
-	public void setUserName(String userName) {this.userName = userName;}
 	public int getGamesPlayed() {return gamesPlayed;}
 	public void setGamesPlayed(int gamesPlayed) {this.gamesPlayed = gamesPlayed;}
 	public int getGamesWon() {return gamesWon;}
 	public void setGamesWon(int gamesWon) {this.gamesWon = gamesWon;}
+	/*
+	 * GameTime ist in Minuten
+	 */
 	public int getTimePlayed() {return timePlayed;}
 	public void setTimePlayed(int timePlayed) {this.timePlayed = timePlayed;}
 	public boolean isActive() {return active;}
