@@ -31,7 +31,6 @@ public  class PasswortDecrypter {
 		for(char c: pw.toCharArray()) {
 			sb = sb.append(Integer.toBinaryString(Integer.valueOf(c)));
 		}
-		System.out.println(sb.toString().length());
 		return sb.toString();
 	}
 	//Wandelt das char[] in ein String[] um 
