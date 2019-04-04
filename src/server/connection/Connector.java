@@ -51,4 +51,8 @@ public class Connector {
 		}
 	}
 	
+	//Prüfe ob user schon gibt 
+	//login 
+	
+	
 }
