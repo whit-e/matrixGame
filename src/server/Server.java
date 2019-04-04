@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import database.Database;
+
 public class Server {
 	
 	public static int serverPort = 1337;
@@ -18,7 +20,6 @@ public class Server {
 	public Database getDatabase() { return this.database; }
 	
 	public Server() {
-		this.database = new Database();
 	}
 	
 	public void start() {

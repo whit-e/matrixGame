@@ -25,13 +25,13 @@ public class Client {
 			InputStream in = this.client.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			
+			
+			
 			writer.println("Hallo lololol");
 			writer.flush();
 			
 			writer.close();
 			reader.close();
-			
-			
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -40,5 +40,7 @@ public class Client {
 		}
 		
 	}
+	
+	
 	
 }

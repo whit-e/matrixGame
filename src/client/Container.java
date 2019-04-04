@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import database.Database;
 import utils.FileUtils;
 import utils.FontUtils;
 
@@ -26,12 +27,16 @@ public class Container extends JPanel implements ActionListener{
 	
 	private GamestateEnum gamestate;
 	
+	private Database database;
+	
 	//getter & setter
 	public Settings getSettings() { return this.settings; }
 	public Startscreen getStartscreen() { return this.startscreen; }
 	public RegisterScreen getRegisterscreen() { return this.registerscreen; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
 	public FileUtils getFileUtils() { return this.fileUtils; }
+	
+	public Database getDatabase() { return this.database; }
 	
 	public GamestateEnum getGamestate() { return this.gamestate; }
 	public Timer getTimer() { return this.timer; }
@@ -48,6 +53,8 @@ public class Container extends JPanel implements ActionListener{
 		this.startscreen = new Startscreen(this);
 		this.registerscreen = new RegisterScreen(this);
 		this.game = new Game(this);
+		
+		this.database = new Database();
 		
 		this.timer = new Timer(1, new ActionListener() {
 			@Override
