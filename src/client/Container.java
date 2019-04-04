@@ -20,19 +20,16 @@ public class Container extends JPanel implements ActionListener{
 	private Settings settings;
 	private Startscreen startscreen;
 	private Game game;
+	private RegisterScreen registerscreen;
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
-	
-	private int test;
-	private int doItKai;
-	private int iDidItMax;
-	private int justDIDIT;
 	
 	private GamestateEnum gamestate;
 	
 	//getter & setter
 	public Settings getSettings() { return this.settings; }
 	public Startscreen getStartscreen() { return this.startscreen; }
+	public RegisterScreen getRegisterscreen() { return this.registerscreen; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
 	public FileUtils getFileUtils() { return this.fileUtils; }
 	
@@ -41,6 +38,7 @@ public class Container extends JPanel implements ActionListener{
 	
 	public Container() {
 		
+		//initializing the attributes
 		this.fontUtils = new FontUtils();
 		this.fileUtils = new FileUtils();
 		
@@ -48,6 +46,7 @@ public class Container extends JPanel implements ActionListener{
 		
 		this.settings = new Settings();
 		this.startscreen = new Startscreen(this);
+		this.registerscreen = new RegisterScreen(this);
 		this.game = new Game(this);
 		
 		this.timer = new Timer(1, new ActionListener() {
@@ -56,6 +55,8 @@ public class Container extends JPanel implements ActionListener{
 				repaint();
 			}
 		}); 
+		// ------------------------
+		
 		timer.start();
 		
 		//stateChange is called here because initially the state is changed from nothing to startscreen
@@ -80,6 +81,10 @@ public class Container extends JPanel implements ActionListener{
 			
 			game.addComponents();
 			game.start();
+		} else if(this.gamestate == GamestateEnum.registerscreen) {
+			startscreen.removeComponents();
+			
+			registerscreen.addComponents();
 		}
 
 		//repaint and revalidate need to be called in order to 
@@ -90,21 +95,28 @@ public class Container extends JPanel implements ActionListener{
 	
 	/**
 	 * this method is called every x seconds (caused by the timer)
+	 * calls the paint method of the different gamestates
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		Graphics2D g2d = (Graphics2D) g;
+		
+		//activate antialising
 		g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
+		//---------------------
 		
+		//paint the components 
 		if(this.gamestate == GamestateEnum.startscreen) {
 			
 		} 
 		else if(this.gamestate == GamestateEnum.game) {
 			game.paintComponent(g2d);
+		} else if(this.gamestate == GamestateEnum.registerscreen) {
+			
 		}
 	}
 	
@@ -113,17 +125,20 @@ public class Container extends JPanel implements ActionListener{
 		//checks which button has been clicked to then change the
 		//gamestate and invoke the method stateChange which will
 		//add and remove the compontens for the current gamestate
+		
 		if(e.getActionCommand() == "Start Game") {
 			this.gamestate = GamestateEnum.game;
-			stateChange();
 		} 
 		else if(e.getActionCommand() == "Menu") {
 			this.gamestate = GamestateEnum.startscreen;
 			
 			game.stop();
-			stateChange();
-		} 
+		} else if(e.getActionCommand().equals(startscreen.getRegisterBtn().getText())) {
+			this.gamestate = GamestateEnum.registerscreen;
+			
+		}
 		
+		stateChange();
 		System.out.println(e.getActionCommand());
 	}
 }
