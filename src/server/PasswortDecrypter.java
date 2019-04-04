@@ -4,10 +4,15 @@ public class PasswortDecrypter {
 /*
  * Benötigt das Passwort beim erstellen der Klasse
  */
-	private String password;
-	public PasswortDecrypter(String pw) {
-		padPw(pw);
+	private String decryptedPassword;
+	public PasswortDecrypter() {
 	}
+	
+	public String decryptPassword(String pw) {
+		padPw(pw);
+		return getDecryptedPassword();
+	}
+	
 	//Wandelt das passwort ins Binärsystem um und padded es auf 512 zeichen
 	private void padPw(String pw) {
 		final int length = 512;
@@ -26,6 +31,7 @@ public class PasswortDecrypter {
 		}
 		changeToString(paddedPW, length);
 	}
+	
 	//Wandelt den String ins binärsystem um 
 	private String convertPwToBin(String pw) {
 		StringBuilder sb = new StringBuilder();
@@ -35,6 +41,7 @@ public class PasswortDecrypter {
 		System.out.println(sb.toString().length());
 		return sb.toString();
 	}
+	
 	//Wandelt das char[] in ein String[] um 
 	private void changeToString(char[] paddedPW, final int length) {
 		String[] binString = new String[(length/32)-1];
@@ -51,6 +58,7 @@ public class PasswortDecrypter {
 		}
 		SplitArrayInHalf(binString);
 	}
+	
 	//jedes Array-Element wird in der mitte gespalten und auf einer der beiden Liste übergeben
 	private void SplitArrayInHalf(String[] binString) {
 		String[] firstHalf = new String[binString.length];
@@ -65,6 +73,7 @@ public class PasswortDecrypter {
 		}
 		settleTheBinCode(firstHalf, secondHalf);
 	}
+	
 	//Flippt jedes Bit
 	private String[] bitFlipping(String[] secondHalf) {
 		String[] flipped = new String[secondHalf.length];
@@ -83,6 +92,7 @@ public class PasswortDecrypter {
 		}
 		return flipped;
 	}
+	
 	//Verrechnung der 2 teile in Hexadezimal
 	private void settleTheBinCode(String[] frontSplit, String[] backSplit) {
 		String[] xOrArray = new String[frontSplit.length]; 					//Länge -> 15 je 16 werte = 240 werte
@@ -100,12 +110,13 @@ public class PasswortDecrypter {
 		}
 		createHexCode(xOrArray);
 	}
+	
 	//Kreiert aus dem String[] eine Hexadezimalzahl
 	private void createHexCode(String[] xOrArray) {
 		StringBuilder sb = new StringBuilder();
 		for(String s: xOrArray) {sb = sb.append(Integer.toHexString(Integer.parseInt(s,2)));}
-		this.password = sb.toString();
+		this.decryptedPassword = sb.toString();
 	}
 	
-	public String getPassword() {return this.password;};
+	private String getDecryptedPassword() {return this.decryptedPassword;};
 }
