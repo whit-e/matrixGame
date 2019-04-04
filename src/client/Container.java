@@ -49,7 +49,6 @@ public class Container extends JPanel implements ActionListener{
 		this.registerscreen = new RegisterScreen(this);
 		this.game = new Game(this);
 		
-		
 		this.timer = new Timer(1, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

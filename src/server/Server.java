@@ -12,18 +12,33 @@ import java.net.Socket;
 public class Server {
 	
 	public static int serverPort = 1337;
+	private ServerSocket server;
+	private Database database;
 	
+	public Database getDatabase() { return this.database; }
 	
-	public static void main(String[] args) {
+	public Server() {
+		this.database = new Database();
+	}
+	
+	public void start() {
 		try {
-					
-			ServerSocket server = new ServerSocket(serverPort);
-			
+			this.server = new ServerSocket(serverPort);
 			System.out.println("Server gestartet");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void waitForClient() {
+		
+		Socket client;
+		
+		while(true) {
 			
-			while(true) {
-				Socket client = server.accept();
-				
+			try {
+				client = server.accept();
 				OutputStream out = client.getOutputStream();
 				PrintWriter writer = new PrintWriter(out);
 				
@@ -38,12 +53,19 @@ public class Server {
 				
 				writer.close();
 				reader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+	}
+	
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+		server.waitForClient();
 	}
 	
 }
