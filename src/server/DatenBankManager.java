@@ -1,16 +1,14 @@
 package server;
 
-import java.sql.*;
-
-import javax.sql.*;
-
 import server.connection.Connector;
+
 public class DatenBankManager {
 
 	public static void main(String[] args) {
 		
-		PasswortDecrypter pwCrypt = new PasswortDecrypter("apfelkuchen");
-		String decryptedPW = pwCrypt.getPassword();
+		PasswortDecrypter pwCrypt = new PasswortDecrypter();
+		
+		String decryptedPW = pwCrypt.decryptPassword("apfelkuchen");
 		Connector connector = new Connector();
 //		if(connector.addNewUser("kleinerTesto", decryptedPW)==1) {
 //			System.out.println("User wurde erfolgreich angelegt");
