@@ -1,5 +1,6 @@
 package server;
 
+import java.net.ServerSocket;
 
 /*
  * 
@@ -13,6 +14,16 @@ public class User {
 		this.gamesPlayed = gamesPlayed;
 		this.active = active;
 	}
+	
+	
+	
+	private void testMethode() {
+		Server server = new Server();
+		server.getServer();
+		System.out.println(server.testMethodeOfServer("hannes"));
+		
+	}
+	ServerSocket test;
 	//Attribute
 	private final String userName;
 	private int gamesPlayed;

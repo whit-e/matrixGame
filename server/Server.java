@@ -61,6 +61,14 @@ public class Server {
 		}
 	}
 	
+	public Server getServer() {
+		return this;
+	}
+	
+	public boolean testMethodeOfServer(String name) {
+		DatenBankManager bdm = new DatenBankManager();
+		return bdm.testUserName(name);
+	}
 	
 	public static void main(String[] args) {
 		Server server = new Server();

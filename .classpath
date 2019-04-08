@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry excluding="resources/" kind="src" path="src"/>
-	<classpathentry kind="src" path="src/resources"/>
-<<<<<<< HEAD
+	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="C:/Users/danzk/Desktop/mysql-connector-java-8.0.15.jar"/>
-=======
-	<classpathentry kind="lib" path="C:/jdk/mysql-connector-java-8.0.15.jar"/>
->>>>>>> branch 'master' of https://github.com/MaxiHotzelt/matrixGame.git
+	<classpathentry combineaccessrules="false" kind="src" path="/APM-Matrix"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/basics"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ExpressionHandler"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/g2dGraphic"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GUI"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Hangman"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/holydays"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/KartenSpiele"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rotatingGif"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Snake"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SnakeServer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Testklasse"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Übungen"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

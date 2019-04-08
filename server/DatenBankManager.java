@@ -7,11 +7,20 @@ import javax.sql.*;
 import server.connection.Connector;
 public class DatenBankManager {
 
+	public DatenBankManager() {
+		this.connector = new Connector();
+	}
+	private Connector connector;
+	
 	public static void main(String[] args) {
+		DatenBankManager dbm = new DatenBankManager();
+		dbm.test();
 		
-		PasswortDecrypter pwCrypt = new PasswortDecrypter("apfelkuchen");
-		String decryptedPW = pwCrypt.getPassword();
-		Connector connector = new Connector();
+	}
+	
+	private void test() {
+		PasswortDecrypter pwCrypt = new PasswortDecrypter();
+		String decryptedPW = pwCrypt.decryptPassword("apfelkuchen");
 //		if(connector.addNewUser("kleinerTesto", decryptedPW)==1) {
 //			System.out.println("User wurde erfolgreich angelegt");
 //		}
@@ -21,12 +30,12 @@ public class DatenBankManager {
 		System.out.println(user.getGamesPlayed());
 		System.out.println(user.getGamesWon());
 		System.out.println(user.isActive());
-		connector.closeConnection();
 		System.out.println("Verbindung wurde geschlossen");
-		
 		
 	}
 
-
+	public boolean testUserName(String name) {
+		return connector.checkForUserName(name);
+	}
 
 }
