@@ -7,7 +7,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import game.matrixComponents.MatrixString;
+import client.game.old.matrixComponents.MatrixString;
 
 public class TestFrame extends JPanel{
 	

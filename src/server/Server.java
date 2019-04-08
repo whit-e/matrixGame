@@ -8,28 +8,59 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
-import database.Database;
+import server.database.DatabaseConnection;
+import server.database.DatabaseConnectionMock;
 
 public class Server {
 	
 	public static int serverPort = 1337;
 	private ServerSocket server;
-	private Database database;
+	private DatabaseConnection databaseConnection;
+	private ArrayList<User> users = new ArrayList<User>();
 	
-	public Database getDatabase() { return this.database; }
+	public DatabaseConnection getDatabase() { return this.databaseConnection; }
+	public ArrayList<User> getUsers() { return this.users; }
 	
 	public Server() {
+		
+		this.databaseConnection = new DatabaseConnection();
+		this.databaseConnection.connect();
+		if(!this.databaseConnection.isSuccessfully()) {
+			this.databaseConnection = new DatabaseConnectionMock();
+		}
+		
+	
 	}
+	
+	// insertUser(User) {
+		// db.insertUser(User)
+		// users.add(User)
+		// return true;
+	// }
+	
+	
+	// isUsernameAvailable(String "max") {
+		// return users.contains("max");
+	//}
+	
 	
 	public void start() {
 		try {
 			this.server = new ServerSocket(serverPort);
 			System.out.println("Server gestartet");
+			
+			listAllUsers();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("Verbindung zum Server konnte nicht hergestellt werden.");
 		}
+	}
+	
+	private void listAllUsers() {
+		this.databaseConnection.getUsers();
 	}
 	
 	public void waitForClient() {

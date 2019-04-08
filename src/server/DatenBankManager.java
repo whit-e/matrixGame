@@ -1,6 +1,8 @@
 package server;
 
-import server.connection.Connector;
+import client.User;
+import client.utils.PasswortDecrypter;
+import server.database.Connector;
 
 public class DatenBankManager {
 
