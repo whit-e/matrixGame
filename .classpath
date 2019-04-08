@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="C:/Users/danzk/Desktop/mysql-connector-java-8.0.15.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/APM-Matrix"/>
@@ -16,5 +17,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Testklasse"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Übungen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+=======
+	<classpathentry excluding="src/|src/resources/" kind="src" path=""/>
+	<classpathentry excluding="resources/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.15.jar"/>
+>>>>>>> branch 'master' of https://github.com/MaxiHotzelt/matrixGame.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>

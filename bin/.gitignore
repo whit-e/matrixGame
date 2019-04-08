@@ -21,10 +21,16 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
 /src/
+=======
+>>>>>>> branch 'master' of https://github.com/MaxiHotzelt/matrixGame.git
 /server/
+<<<<<<< HEAD
 /client/
 /utils/
 /Test/
 /startingpoint/
 /game/
+=======
+>>>>>>> branch 'master' of https://github.com/MaxiHotzelt/matrixGame.git
