@@ -1,8 +1,11 @@
-package client.game;
+package client.game.screens;
 
 import java.awt.Graphics2D;
 
 import javax.swing.JButton;
+
+import client.game.MatrixString;
+import client.game.SolutionString;
 
 public class Gamescreen {
 	

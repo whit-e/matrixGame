@@ -1,5 +1,5 @@
 package client.game;
 
 public enum GamestateEnum {
-	startscreen, registerscreen, gamescreen, loginscreen
+	startscreen, registerscreen, gamescreen, gamemenuscreen, createlobbyscreen
 }
