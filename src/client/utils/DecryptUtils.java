@@ -1,4 +1,4 @@
-package src.client.utils;
+package client.utils;
 
 public class DecryptUtils {
 	
@@ -26,23 +26,6 @@ public class DecryptUtils {
 		
 		this.registerInfo = "isRegisterPossible~~~" + username + "~~" + pwDecrypter.decryptPassword(password);
 		return registerInfo;
-	}
-	
-	public static void main(String[] args) {
-		DecryptUtils test = new DecryptUtils();
-		test.getEncryptedString("ސܰހ̀ܠސߠ̀ݐސߠ̀ذܐࡀࢠ");
-	}
-	
-	/*
-	 * Decrypt the given String
-	 */
-	public String getEncryptedString(String username) {
-		StringBuilder sb = new StringBuilder();
-		for(Character c:username.toCharArray()) {
-			sb.append((char)((c.hashCode()/username.length()-username.length())));
-		}
-		System.out.println(sb.toString());
-		return sb.toString();
 	}
 	
 	
