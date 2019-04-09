@@ -2,6 +2,8 @@ package client.game;
 
 import java.awt.Graphics;
 
+import client.game.screens.Gamescreen;
+
 public class SolutionString extends Thread implements Runnable{
 	
 	private Gamescreen game;
@@ -29,9 +31,12 @@ public class SolutionString extends Thread implements Runnable{
 				g.drawString("" + tempSolution[i], posX += g.getFontMetrics().stringWidth(""+tempSolution[i]), 
 				game.getContainer().getHeight() - g.getFontMetrics().getHeight());
 			}
-			
 		}
 		
+		
+	}
+	
+	public void brechne() {
 		
 	}
 	

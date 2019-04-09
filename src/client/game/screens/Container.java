@@ -1,4 +1,4 @@
-package client.game;
+package client.game.screens;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import client.game.GamestateEnum;
+import client.game.ServerConnection;
+import client.game.Settings;
 import client.utils.DecryptUtils;
 import client.utils.FileUtils;
 import client.utils.FontUtils;
@@ -23,7 +26,8 @@ public class Container extends JPanel implements ActionListener{
 	private Startscreen startscreen;
 	private Gamescreen gamescreen;
 	private Registerscreen registerscreen;
-	private Loginscreen loginscreen;
+	private Gamemenuscreen gamemenuscreen;
+	private CreateLobbyscreen createlobbyscreen;
 	
 	private ServerConnection serverConnection;
 	private FontUtils fontUtils;
@@ -37,7 +41,6 @@ public class Container extends JPanel implements ActionListener{
 	public Settings getSettings() { return this.settings; }
 	public Startscreen getStartscreen() { return this.startscreen; }
 	public Registerscreen getRegisterscreen() { return this.registerscreen; }
-	public Loginscreen getLoginscreen() { return this.loginscreen; }
 	
 	public ServerConnection getServerConnection() { return this.serverConnection; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
@@ -71,7 +74,8 @@ public class Container extends JPanel implements ActionListener{
 		this.startscreen = new Startscreen(this);
 		this.registerscreen = new Registerscreen(this);
 		this.gamescreen = new Gamescreen(this);
-		this.loginscreen = new Loginscreen(this);
+		this.gamemenuscreen = new Gamemenuscreen(this);
+		this.createlobbyscreen = new CreateLobbyscreen(this);
 		
 		this.timer = new Timer(1, new ActionListener() {
 			@Override
@@ -89,26 +93,29 @@ public class Container extends JPanel implements ActionListener{
 	 */
 	private void stateChange() {
 		if(this.gamestate == GamestateEnum.startscreen) {
-			gamescreen.removeComponents();
 			registerscreen.removeComponents();
-			loginscreen.removeComponents();
+			gamemenuscreen.removeComponents();
 			
 			startscreen.addComponents();
-		} 
-		else if(this.gamestate == GamestateEnum.gamescreen) {
-			startscreen.removeComponents();
-			
-			gamescreen.addComponents();
-			gamescreen.start();
 		} else if(this.gamestate == GamestateEnum.registerscreen) {
 			startscreen.removeComponents();
 			
 			registerscreen.addComponents();
-		} else if(this.gamestate == GamestateEnum.loginscreen) {
+		}  else if(this.gamestate == GamestateEnum.gamemenuscreen) {
 			startscreen.removeComponents();
+			createlobbyscreen.removeComponents();
 			
-			loginscreen.addComponents();
-		}
+			gamemenuscreen.addComponents();
+		} else if(this.gamestate == GamestateEnum.createlobbyscreen) {
+			this.gamemenuscreen.removeComponents();
+			
+			this.createlobbyscreen.addComponents();
+		} else if(this.gamestate == GamestateEnum.gamescreen) {
+			this.createlobbyscreen.removeComponents();
+			
+			this.gamescreen.addComponents();
+			this.gamescreen.start();
+		} 
 
 		//repaint and revalidate need to be called in order to 
 		//remove and add the components correctly
@@ -143,45 +150,56 @@ public class Container extends JPanel implements ActionListener{
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//checks which button has been clicked to then change the
 		//gamestate and invoke the method stateChange which will
 		//add and remove the compontens for the current gamestate
 		
-		if(e.getActionCommand() == "Start Game") {
-			this.gamestate = GamestateEnum.gamescreen;
-		} 
-		else if(e.getActionCommand() == "Menu") {
-			this.gamestate = GamestateEnum.startscreen;
-			
-			gamescreen.stop();
-		} 
+		
+		//---------- startscreen ----------
+		
+		if(e.getSource() == startscreen.getLoginBtn()) {
+			if(true) {
+				System.out.println("Login was succesful");
+				this.gamestate = GamestateEnum.gamemenuscreen;
+			} else {
+				System.out.println("Login was unsuccesful");
+			}
+		}
 		//register button on startscreen has been clicked
-		else if(e.getActionCommand() == startscreen.getRegisterBtn().getActionCommand()) {
+		else if(e.getSource() == startscreen.getRegisterBtn()) {
 			this.gamestate = GamestateEnum.registerscreen;
 			
 		} 
-		//login button on startscreen has been clicked
-		else if(e.getActionCommand() == loginscreen.getLoginBtn().getActionCommand()) {
-			this.gamestate = GamestateEnum.loginscreen;
-		}
-		//cancel button on registerscreen has been clicked or
-		//cancel button on loginscreen has been clicked
-		else if(e.getActionCommand() == registerscreen.getCancelBtn().getActionCommand() ||
-				e.getActionCommand() == loginscreen.getCancelBtn().getActionCommand()
-				) {
-			this.gamestate = GamestateEnum.startscreen;
-			
-			this.registerscreen.reset();
-		}
-		//register button has been clicked
-		else if(e.getActionCommand() == registerscreen.getRegisterBtn().getActionCommand()) {
-			//getting the username and pw to then 
+
+		//---------- registerscreen ----------
+		
+		else if(e.getSource() == registerscreen.getRegisterBtn()) {
 			encryptUtils.prepareIsRegisterPossible(registerscreen.getUsernameTxtFd().getText(), 
 					registerscreen.getPasswordTxtFd().getText());
 		}
+		else if(e.getSource() == registerscreen.getCancelBtn()) {
+			this.gamestate = GamestateEnum.startscreen;
+			this.registerscreen.reset();
+		}
 		
+		//---------- gamemenuscreen ----------
+		else if(e.getSource() == gamemenuscreen.getLogoutBtn()) {
+			this.gamestate = GamestateEnum.startscreen;
+		} else if(e.getSource() == gamemenuscreen.getCreateLobbyBtn()) {
+			this.gamestate = GamestateEnum.createlobbyscreen;
+		}
+		
+		//---------- createlobbyscreen ----------
+		
+		else if(e.getSource() == createlobbyscreen.getBackBtn()) {
+			this.gamestate = GamestateEnum.gamemenuscreen;
+		} 
+		else if(e.getSource() == createlobbyscreen.getStartGameBtn()) {
+			this.gamestate = GamestateEnum.gamescreen;
+		}
 		
 		stateChange();
 		System.out.println(e.getActionCommand());

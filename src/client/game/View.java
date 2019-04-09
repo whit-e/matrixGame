@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
+import client.game.screens.Container;
+
 @SuppressWarnings("serial")
 public class View extends JFrame{
 	

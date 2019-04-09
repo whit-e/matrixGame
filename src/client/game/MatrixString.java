@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Random;
 
+import client.game.screens.Gamescreen;
+
 
 
 public class MatrixString extends Thread implements Runnable{
