@@ -33,11 +33,6 @@ public class SolutionString extends Thread implements Runnable{
 			}
 		}
 		
-		
-	}
-	
-	public void brechne() {
-		
 	}
 	
 	@Override

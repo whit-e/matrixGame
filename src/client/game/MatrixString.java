@@ -36,7 +36,7 @@ public class MatrixString extends Thread implements Runnable{
 	
 	
 	private void shuffleWord() {
-		String tempWord = this.game.getSoughtWord();
+		String tempWord = this.game.getSoughtWord().toUpperCase();
 		//tempWord = "ABCDEFGHIJKLMNOPQRSTUFWXYZ".toLowerCase();
 		this.shuffeledWord = "";
 		// Solange das tempWord noch buchstaben besitzt, werden zufällig ausgewählte buchstaben aus dessen entfernt 

@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 
+import client.game.Inputfield;
 import client.game.MatrixString;
 import client.game.SolutionString;
 
@@ -15,32 +16,37 @@ public class Gamescreen {
 	
 	private MatrixString matrixString;
 	private SolutionString solutionString;
+	private Inputfield inputfield;
 	
 	//getter
 	public Container getContainer() { return this.container; }
 	public String getSoughtWord() { return this.soughtWord; }
 	public SolutionString getSolutionString() { return this.solutionString; }
+	public Inputfield getInputfield() { return this.inputfield; }
 	
 	public Gamescreen(Container container) {
 		this.container = container;
 		
 		
 		backBtn.addActionListener(container);
+		
 	}
 	
 	public void start() {
-		soughtWord = container.getFileUtils().getRandomWord();
+		this.container.requestFocus();
+		this.soughtWord = container.getFileUtils().getRandomWord().toLowerCase();
 		System.out.println(soughtWord);
 		
 
+		this.inputfield = new Inputfield(this);
 		this.solutionString = new SolutionString(this);
 		this.matrixString = new MatrixString(this);
-		
 		
 		this.matrixString.setRunning(true);
 		this.matrixString.start();
 		
 		this.solutionString.start();
+		
 	}
 	
 	public void stop() {
@@ -61,5 +67,6 @@ public class Gamescreen {
 	public void paintComponent(Graphics2D g) {
 		matrixString.render(g);
 		solutionString.render(g);
+		inputfield.render(g);
 	}
 }
