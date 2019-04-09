@@ -32,17 +32,22 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 		frame.setVisible(true);
 	}
 	
-	
+	//Word to resolve
 	private String word;
+	//available chars 
 	private String chars = "abcdefghijklmnopqrstuvwxyzäüöß";
+	//Array which contains input of user(char)
 	private char[] resolveAr;
+	//indicates the place in resolveAr
 	private int counter; 
 	
+	//Set´s the Word 
 	public void setWord(String word) {
 		this.word = word;
 		init();
 	}
 	
+	//Keylistener
 	@Override
 	public void keyTyped(KeyEvent e) {}
 	@Override
@@ -57,6 +62,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 			deleteLastChar();
 		}
 	}
+	//initialises the start for the round
 	private void init() {
 		resolveAr = new char[word.length()];
 		getRdy();
@@ -69,7 +75,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 	public void paintComponent(Graphics g) {
 		paint(g);
 	}
-	
+	//Reworkable -> paints the user char input
 	public void paint(Graphics g) {
 		int x = 150;
 		int y = 30;
@@ -81,7 +87,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 		repaint();
 	}
 	
-	
+	//deletes the last char and reduces counter
 	private void deleteLastChar() {
 		if(counter >0 && counter <= word.length()+1) {
 			counter--;
@@ -89,7 +95,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 		resolveAr[counter] = '_';
 		repaint();
 	}
-	
+	//adds char to array and raised counter
 	private void addCharToAr(char character) {
 		resolveAr[counter] = character;
 		if(counter >=0 && counter < word.length()-1) {
@@ -97,6 +103,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 		}
 	}
 	
+	//Should send the users input to check if its the same 
 	private void getRdy() {
 		if(word.contentEquals(String.valueOf(resolveAr))) {
 			System.out.println("gewonnen");
@@ -107,6 +114,7 @@ public class ResolveCanvas extends JPanel implements KeyListener{
 		}
 	}
 	
+	//returns this jpanel
 	public JPanel getCanvas() {
 		return this;
 	}
