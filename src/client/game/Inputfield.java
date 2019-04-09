@@ -41,10 +41,10 @@ public class Inputfield {
 	
 	//deletes the last char and reduces counter
 	public void deleteLastChar() {
+		currentWord[currentPosition] = '_';
 		if(currentPosition > 0 && currentPosition <= word.length()+1) {
 			currentPosition--;
 		}
-		currentWord[currentPosition] = '_';
 	}
 	//adds char to array and raises counter
 	public void addCharToArr(char character) {
