@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import client.ServerConnection;
 import client.utils.DecryptUtils;
 import client.utils.FileUtils;
 import client.utils.FontUtils;

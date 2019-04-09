@@ -1,6 +1,5 @@
 package server;
 
-import client.User;
 import client.utils.PasswortDecrypter;
 import server.database.Connector;
 

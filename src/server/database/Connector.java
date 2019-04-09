@@ -2,7 +2,8 @@ package server.database;
 
 import java.sql.*;
 
-import client.User;
+import server.User;
+
 
 public class Connector {
 	

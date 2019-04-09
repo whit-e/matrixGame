@@ -2,7 +2,8 @@ package server.database;
 
 import java.util.ArrayList;
 
-import client.User;
+import server.User;
+
 
 public class DatabaseConnectionMock extends DatabaseConnection {
 	
