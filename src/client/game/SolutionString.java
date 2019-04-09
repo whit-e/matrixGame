@@ -4,10 +4,10 @@ import java.awt.Graphics;
 
 public class SolutionString extends Thread implements Runnable{
 	
-	private Game game;
+	private Gamescreen game;
 	private char[] tempSolution;
 	
-	public SolutionString(Game game) {
+	public SolutionString(Gamescreen game) {
 		this.game = game;
 		tempSolution = game.getSoughtWord().replaceAll("\\w", " ").toCharArray();
 	}

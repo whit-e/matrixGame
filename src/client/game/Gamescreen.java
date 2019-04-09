@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 
-public class Game {
+public class Gamescreen {
 	
 	private JButton backBtn = new JButton("Menu");
 	private Container container;
@@ -18,7 +18,7 @@ public class Game {
 	public String getSoughtWord() { return this.soughtWord; }
 	public SolutionString getSolutionString() { return this.solutionString; }
 	
-	public Game(Container container) {
+	public Gamescreen(Container container) {
 		this.container = container;
 		
 		

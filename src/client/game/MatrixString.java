@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class MatrixString extends Thread implements Runnable{
 	
-	private Game game;
+	private Gamescreen game;
 	private int reshuffleTime;
 	private String shuffeledWord;
 	private boolean running;
@@ -26,7 +26,7 @@ public class MatrixString extends Thread implements Runnable{
 	public void setRunning(boolean running) { this.running = running; }
 	
 
-	public MatrixString(Game game) {
+	public MatrixString(Gamescreen game) {
 		this.game = game;
 		this.reshuffleTime = new Random().nextInt(2000+1)+1000;
 		shuffleWord();

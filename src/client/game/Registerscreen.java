@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class RegisterScreen implements FocusListener{
+public class Registerscreen implements FocusListener{
 	
 	//all the components of the register screen are added to this JPanel
 	private JPanel componentHolder;
@@ -36,7 +36,7 @@ public class RegisterScreen implements FocusListener{
 	public JTextField getUsernameTxtFd() { return this.usernameTxtFd; }
 	public JTextField getPasswordTxtFd() { return this.passwordPwFd; }
 	
-	public RegisterScreen(Container container) {
+	public Registerscreen(Container container) {
 		this.container = container;
 		
 		init();

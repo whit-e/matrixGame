@@ -1,10 +1,8 @@
 package server.database;
 
 import java.sql.*;
-import javax.sql.*;
 
 import client.User;
-import client.utils.PasswortDecrypter;
 
 public class Connector {
 	
@@ -14,7 +12,6 @@ public class Connector {
 	private Connection connection;
 	
 	private void connect() {
-		String driver = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/test?serverTimezone=UTC";
 		String username = "matrix_connector";
 		String pw = "matrix";
