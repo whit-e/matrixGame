@@ -3,6 +3,7 @@ package client.game;
 import java.awt.Graphics2D;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class Gamescreen {
 	
@@ -23,11 +24,16 @@ public class Gamescreen {
 		
 		
 		backBtn.addActionListener(container);
+		
+		//Hinzufügen des Canvas Objekts für testZwecke
+		
+		
 	}
 	
 	public void start() {
 		soughtWord = container.getFileUtils().getRandomWord();
 		System.out.println(soughtWord);
+		
 		
 
 		this.solutionString = new SolutionString(this);
