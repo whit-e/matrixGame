@@ -22,7 +22,6 @@ public class Inputfield {
 	public Inputfield(Gamescreen gamescreen) {
 		this.gamescreen = gamescreen;
 		this.word = gamescreen.getSoughtWord();
-		
 		prepareWord();
 	}
 	
