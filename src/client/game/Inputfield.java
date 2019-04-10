@@ -11,7 +11,7 @@ public class Inputfield {
 	private String word;
 	//Array which contains input of user(char)
 	private char[] currentWord;
-	//indicates the place in resolveAr
+	//indicates the position in the currentWord
 	private int currentPosition; 
 	
 	private Gamescreen gamescreen;
