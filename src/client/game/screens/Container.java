@@ -156,7 +156,7 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	private void render(Graphics g) {
-		g.setFont(this.fontUtils.getMatrixFont(50F));
+		g.setFont(this.fontUtils.getMatrixFont().deriveFont(50F));
 		g.drawString("t THE MATRIX GAME u", 200, 500);
 	}
 	

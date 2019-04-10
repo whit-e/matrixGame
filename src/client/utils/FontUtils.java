@@ -16,8 +16,9 @@ public class FontUtils {
 	
 	//getter
 	public Font getMatrixGameFont() { return this.matrixGameFont; }
-	public Font getMatrixFont(float fontSize) { return this.matrixFont.deriveFont(fontSize); }
-	public Font getMatrixFont2(float fontSize) { return this.matrixFont2.deriveFont(fontSize); }
+	public Font getMatrixFont() { return this.matrixFont; }
+	public Font getMatrixFont2() { return this.matrixFont2; }
+	
 	
 	public FontUtils() {
 		loadFonts("/fonts/Miltown_.ttf");

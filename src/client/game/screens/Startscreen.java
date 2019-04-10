@@ -59,9 +59,9 @@ public class Startscreen {
 		//add needed listener
 		this.registerBtn.addActionListener(container);
 		this.loginBtn.addActionListener(container);
-		
-		usernameLbl.setFont(this.container.getFontUtils().getMatrixFont(20F));
-		passwordLbl.setFont(this.container.getFontUtils().getMatrixFont(20F));
+
+		usernameLbl.setFont(this.container.getFontUtils().getMatrixFont().deriveFont(20F));
+		passwordLbl.setFont(this.container.getFontUtils().getMatrixFont().deriveFont(20F));
 		
 		
 		//config compononents
