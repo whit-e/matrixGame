@@ -48,17 +48,21 @@ public class Startscreen {
 		this.usernameTxtFd = new JTextField("", 15);
 		this.passwordPwFd = new JPasswordField("", 15);
 		
-		this.usernameLbl = new JLabel("Benutzername");
-		this.passwordLbl = new JLabel("Passwort");
+		this.usernameLbl = new JLabel("BENUTZERNAME");
+		this.passwordLbl = new JLabel("PASSWORT");
 		
-		this.loginBtn = new JButton("Login");
-		this.registerBtn = new JButton("Create an Account");
+		this.loginBtn = new JButton("LOGIN");
+		this.registerBtn = new JButton("REGISTER");
 	}
 	
 	private void config() {
 		//add needed listener
 		this.registerBtn.addActionListener(container);
 		this.loginBtn.addActionListener(container);
+		
+		usernameLbl.setFont(this.container.getFontUtils().getMatrixFont(20F));
+		passwordLbl.setFont(this.container.getFontUtils().getMatrixFont(20F));
+		
 		
 		//config compononents
 		this.componentHolder.setLayout(new GridLayout(2, 1, 10, 10));

@@ -37,7 +37,6 @@ public class MatrixString extends Thread implements Runnable{
 	
 	private void shuffleWord() {
 		String tempWord = this.game.getSoughtWord().toUpperCase();
-		//tempWord = "ABCDEFGHIJKLMNOPQRSTUFWXYZ".toLowerCase();
 		this.shuffeledWord = "";
 		// Solange das tempWord noch buchstaben besitzt, werden zufällig ausgewählte buchstaben aus dessen entfernt 
 		// und der mList hinzugefügt 
@@ -58,7 +57,7 @@ public class MatrixString extends Thread implements Runnable{
 	
 	public void renderWord(Graphics g) {
 		//getting the font used for our matrix string
-		Font font = this.game.getContainer().getFontUtils().getMatrixFont();
+		Font font = this.game.getContainer().getFontUtils().getMatrixGameFont();
 
 		//getting the wordheight, to then calculate a random starting point
 		//which should be out of the screen --> this is done, so that every matrix string comes
@@ -74,10 +73,16 @@ public class MatrixString extends Thread implements Runnable{
 		}
 		
 		char[] wordArray = shuffeledWord.toCharArray();
-		for(int i = 0; i < shuffeledWord.length(); i++) {
-			g.setColor(Color.BLACK);
-			g.setFont(font);
-			g.drawString("" + wordArray[i], 100, posY + g.getFontMetrics().getHeight()  * (i+1) - g.getFontMetrics().getDescent());
+		try {
+			for(int i = 0; i < shuffeledWord.length(); i++) {
+				g.setColor(Color.BLACK);
+				g.setFont(font);
+				g.drawString("" + wordArray[i], 100, posY + g.getFontMetrics().getHeight()  * (i+1) - g.getFontMetrics().getDescent());
+			}
+		}
+		catch(Exception e) {
+			//TODO fix the drawing error
+			System.out.println("Drawing error");
 		}
 		
 		this.posY = this.posY+ this.yspeed;

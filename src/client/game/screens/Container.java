@@ -146,13 +146,18 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		
 		//paint the components 
 		if(this.gamestate == GamestateEnum.startscreen) {
-			
+			render(g2d);
 		} 
 		else if(this.gamestate == GamestateEnum.gamescreen) {
 			gamescreen.paintComponent(g2d);
 		} else if(this.gamestate == GamestateEnum.registerscreen) {
 			
 		}
+	}
+	
+	private void render(Graphics g) {
+		g.setFont(this.fontUtils.getMatrixFont(50F));
+		g.drawString("t THE MATRIX GAME u", 200, 500);
 	}
 	
 	@SuppressWarnings("unused")
