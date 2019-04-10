@@ -25,7 +25,6 @@ public class Inputfield {
 		prepareWord();
 	}
 	
-
 	public void render(Graphics g) {
 		g.getFontMetrics();
 		int charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize();
