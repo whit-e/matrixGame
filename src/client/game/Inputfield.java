@@ -1,7 +1,11 @@
 package client.game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
 
 import client.game.screens.Gamescreen;
 
@@ -13,31 +17,50 @@ public class Inputfield {
 	private char[] currentWord;
 	//indicates the position in the currentWord
 	private int currentPosition; 
-	
+	private int charWidth;
+	private int spaceBetweenChars;
 	private Gamescreen gamescreen;
 	
 	//getter 
-	public Gamescreen getGamescreen() { return this.gamescreen; }
+	public Gamescreen getGamescreen() { 
+		return this.gamescreen; 
+	}
 	
 	public Inputfield(Gamescreen gamescreen) {
 		this.gamescreen = gamescreen;
 		this.word = gamescreen.getSoughtWord();
+		this.charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize()/2+(gamescreen.getContainer().getFontUtils().getMatrixFont().getSize()/4);
+		this.spaceBetweenChars = charWidth+5;
+		
 		prepareWord();
+	}
+	
+	private Font checkForCharSize(Graphics g) {
+		Font f = g.getFont();
+		FontRenderContext con = new FontRenderContext(f.getTransform(), false, false);
+		int maxCharBound = (int) ((word.length()-2)*charWidth+(2*(f.getMaxCharBounds(con).getWidth()))+100);
+		if(maxCharBound>gamescreen.getContainer().getWidth()) {
+			this.charWidth -=10;
+			this.spaceBetweenChars = charWidth+10;
+			f.deriveFont(charWidth);
+			return checkForCharSize(g);
+		};
+		return f;
 	}
 	
 	public void render(Graphics g) {
 		g.getFontMetrics();
-		int charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize();
-		int x = ((gamescreen.getContainer().getWidth())-(gamescreen.getContainer().getWidth()%10))/2-((charWidth*(word.length()-word.length()%2))/2)-(charWidth*2);
+		g.setFont(checkForCharSize(g));
+		int x = ((gamescreen.getContainer().getWidth())-(gamescreen.getContainer().getWidth()%10))/2-(charWidth*(word.length()))/2-(charWidth/2)-5;
 		int y = gamescreen.getContainer().getHeight()-(gamescreen.getContainer().getHeight()/15);
 		g.setColor(Color.white);
 		for(int i = 0; i < currentWord.length;i++) {
-			if(currentWord[i]=='w') {
-				g.drawString(String.valueOf(currentWord[i]), x+=charWidth, y);
-				charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize()+5;
+			if(currentWord[i]=='w' && i !=word.length()-1) {
+				g.drawString(String.valueOf(currentWord[i]), x+=spaceBetweenChars, y);
+				spaceBetweenChars += 5;
 			}else {
-				g.drawString(String.valueOf(currentWord[i]), x+=charWidth, y);
-				charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize();
+				g.drawString(String.valueOf(currentWord[i]), x+=spaceBetweenChars, y);
+				this.spaceBetweenChars = charWidth;
 			}
 		}
 	}
@@ -81,7 +104,7 @@ public class Inputfield {
 	}
 	
 	public boolean checkWon() {
-		if(String.valueOf(currentWord).equals(word)) {
+		if(String.valueOf(currentWord).toLowerCase().equals(word)) {
 			return true;
 		} else {
 			return false;
