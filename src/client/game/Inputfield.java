@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.font.FontRenderContext;
+import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import client.game.screens.Gamescreen;
 
@@ -17,9 +20,10 @@ public class Inputfield {
 	private char[] currentWord;
 	//indicates the position in the currentWord
 	private int currentPosition; 
-	private int charWidth;
-	private int spaceBetweenChars;
+	//The Spacing between each Char (at Drawing)
+	private final double charSpacing = 0.5;
 	private Gamescreen gamescreen;
+	
 	
 	//getter 
 	public Gamescreen getGamescreen() { 
@@ -29,40 +33,31 @@ public class Inputfield {
 	public Inputfield(Gamescreen gamescreen) {
 		this.gamescreen = gamescreen;
 		this.word = gamescreen.getSoughtWord();
-		this.charWidth = gamescreen.getContainer().getFontUtils().getMatrixFont().getSize()/2+(gamescreen.getContainer().getFontUtils().getMatrixFont().getSize()/4);
-		this.spaceBetweenChars = charWidth+5;
-		
 		prepareWord();
 	}
 	
-	private Font checkForCharSize(Graphics g) {
+	//maximale bounds benutzen
+	private Graphics checkForCharSize(Graphics g) {
 		Font f = g.getFont();
-		FontRenderContext con = new FontRenderContext(f.getTransform(), false, false);
-		int maxCharBound = (int) ((word.length()-2)*charWidth+(2*(f.getMaxCharBounds(con).getWidth()))+100);
-		if(maxCharBound>gamescreen.getContainer().getWidth()) {
-			this.charWidth -=10;
-			this.spaceBetweenChars = charWidth+10;
-			f.deriveFont(charWidth);
+		int newSize = f.getSize();
+		int maxCharBound = (int)(new TextLayout(String.valueOf(currentWord), g.getFont(), new FontRenderContext(g.getFont().getTransform(),false,false)).getBounds().getWidth());
+		if(maxCharBound+100>gamescreen.getContainer().getWidth()) {
+			g.setFont(new Font(g.getFont().getName(), g.getFont().getStyle(), newSize--));
 			return checkForCharSize(g);
 		};
-		return f;
+		return g;
 	}
 	
 	public void render(Graphics g) {
+		Map<TextAttribute, Object> attributes = new HashMap<>();
+		attributes.put(TextAttribute.TRACKING, charSpacing);
+		g.setFont(g.getFont().deriveFont(attributes));
 		g.getFontMetrics();
-		g.setFont(checkForCharSize(g));
-		int x = ((gamescreen.getContainer().getWidth())-(gamescreen.getContainer().getWidth()%10))/2-(charWidth*(word.length()))/2-(charWidth/2)-5;
+		g = checkForCharSize(g);
+		int x = gamescreen.getContainer().getWidth()/2-(int)(new TextLayout(String.valueOf(currentWord), g.getFont(), new FontRenderContext(g.getFont().getTransform(),false,false)).getBounds().getWidth()/2);
 		int y = gamescreen.getContainer().getHeight()-(gamescreen.getContainer().getHeight()/15);
 		g.setColor(Color.white);
-		for(int i = 0; i < currentWord.length;i++) {
-			if(currentWord[i]=='w' && i !=word.length()-1) {
-				g.drawString(String.valueOf(currentWord[i]), x+=spaceBetweenChars, y);
-				spaceBetweenChars += 5;
-			}else {
-				g.drawString(String.valueOf(currentWord[i]), x+=spaceBetweenChars, y);
-				this.spaceBetweenChars = charWidth;
-			}
-		}
+		g.drawString(String.valueOf(currentWord), x, y);
 	}
 	
 	//deletes the last char and reduces counter
