@@ -38,6 +38,7 @@ public class Inputfield {
 		prepareWord();
 	}
 	
+	
 	//maximale bounds benutzen
 	private Font checkForCharSize() {
 		Map<TextAttribute, Object> attributes = new HashMap<>();
