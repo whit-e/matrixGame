@@ -22,8 +22,9 @@ public class Inputfield {
 	private int currentPosition; 
 	//The Spacing between each Char (at Drawing)
 	private final double charSpacing = 0.1;
-	private Gamescreen gamescreen;
 	private Font font; 
+	private final int MAXFONTSIZE = 70;
+	private Gamescreen gamescreen;
 	
 	
 	//getter 
@@ -39,33 +40,30 @@ public class Inputfield {
 	}
 	
 	
-	//maximale bounds benutzen
+	//Checks if the String full of w would be larger as the screen if so it resizes the Font till it fit´s again
 	private Font checkForCharSize() {
 		Map<TextAttribute, Object> attributes = new HashMap<>();
 		attributes.put(TextAttribute.TRACKING, charSpacing);
 		//Test Font till we install the real Font 
-		Font f = new Font("SansSerif", Font.PLAIN, 20);
-		//Real Font
-//		gamescreen.getContainer().getFontUtils().getMatrixFont().deriveFont(attributes);
+		Font f = gamescreen.getContainer().getFontUtils().getMatrixGameFont().deriveFont(attributes);
 		int newSize = f.getSize();
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < word.length();i++) {
 			sb.append('w');
 		}
 		int maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
-		System.out.println(maxCharBound);
-		//Makes the Font smaller till it it fit´s on the screen (with a padding of 50 each side)
+		//Makes the Font smaller till it fit´s on the screen (with a padding of 50 each side)
 		if(maxCharBound+120>gamescreen.getContainer().getWidth()) {
 			while(maxCharBound+100>gamescreen.getContainer().getWidth()) {
 				f = new Font(f.getName(), f.getStyle(), newSize--).deriveFont(attributes);
 				maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
 			}
-		//Expands the Font till it stays on a good Size
-		}else {
-			while(maxCharBound+100 <gamescreen.getContainer().getWidth()-100) {
+		//Expands the Font till it stays on a good Size BUT not larger than MAXFONTSIZE
+		}
+		else {
+			while(maxCharBound+100 <gamescreen.getContainer().getWidth()-100 && f.getSize()<=MAXFONTSIZE) {
 				f = new Font(f.getName(), f.getStyle(), newSize++).deriveFont(attributes);
 				maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
-			
 			}
 		}
 		return f;
