@@ -3,6 +3,7 @@ package client.game.screens;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,7 @@ import javax.swing.Timer;
 import client.game.GamestateEnum;
 import client.game.ServerConnection;
 import client.game.Settings;
-import client.utils.DecryptUtils;
+import client.utils.EncryptUtils;
 import client.utils.FileUtils;
 import client.utils.FontUtils;
 
@@ -34,10 +35,11 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	private ServerConnection serverConnection;
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
-	private DecryptUtils encryptUtils;
+	private EncryptUtils decryptUtils;
 	
 
 	private GamestateEnum gamestate;
+	private GridBagConstraints gridBagConstraints;
 	
 	//getter & setter
 	public Settings getSettings() { return this.settings; }
@@ -47,18 +49,15 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	public ServerConnection getServerConnection() { return this.serverConnection; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
 	public FileUtils getFileUtils() { return this.fileUtils; }
-	public DecryptUtils getEncryptUtils() { return this.encryptUtils; }
+	public EncryptUtils getDecryptUtils() { return this.decryptUtils; }
 	
 	public GamestateEnum getGamestate() { return this.gamestate; }
+	public GridBagConstraints getGridBagCon() { return this.gridBagConstraints; }
 	public Timer getTimer() { return this.timer; }
 	
 	public Container() {
-		
 		init();
-		timer.start();
-		
-		this.setBackground(Color.GRAY);
-		this.addKeyListener(this);
+		config();
 		
 		
 		//stateChange is called here because initially the state is changed from nothing to startscreen
@@ -80,6 +79,9 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		this.gamescreen = new Gamescreen(this);
 		this.gamemenuscreen = new Gamemenuscreen(this);
 		this.createlobbyscreen = new CreateLobbyscreen(this);
+		this.decryptUtils = new EncryptUtils();
+		
+		this.serverConnection = new ServerConnection();
 		
 		
 		this.timer = new Timer(1, new ActionListener() {
@@ -88,6 +90,14 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 				repaint();
 			}
 		}); 
+	}
+	
+	private void config() {
+		//timer is started here and calls repaint every 1ms
+		timer.start();
+
+		this.addKeyListener(this);
+		this.setBackground(Color.GRAY);
 	}
 	
 	
@@ -146,7 +156,7 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		
 		//paint the components 
 		if(this.gamestate == GamestateEnum.startscreen) {
-			render(g2d);
+			this.startscreen.render(g2d);
 		} 
 		else if(this.gamestate == GamestateEnum.gamescreen) {
 			gamescreen.paintComponent(g2d);
@@ -155,10 +165,6 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		}
 	}
 	
-	private void render(Graphics g) {
-		g.setFont(this.fontUtils.getMatrixFont().deriveFont(50F));
-		g.drawString("t THE MATRIX GAME u", 200, 500);
-	}
 	
 	@SuppressWarnings("unused")
 	@Override
@@ -171,6 +177,13 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		//---------- startscreen ----------
 		
 		if(e.getSource() == startscreen.getLoginBtn()) {
+			String password = this.startscreen.getPasswordFd().getText();
+			String username = this.startscreen.getUserNameTxtFd().getText();
+			
+			//send message with encrypted username and password to server
+			String message = this.decryptUtils.prepareIsRegisterPossible(username, password);
+			this.serverConnection.sendMessage(message);
+			
 			if(true) {
 				System.out.println("Login was succesful");
 				this.gamestate = GamestateEnum.gamemenuscreen;
@@ -187,8 +200,12 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		//---------- registerscreen ----------
 		
 		else if(e.getSource() == registerscreen.getRegisterBtn()) {
-			encryptUtils.prepareIsRegisterPossible(registerscreen.getUsernameTxtFd().getText(), 
-					registerscreen.getPasswordTxtFd().getText());
+			String password = this.registerscreen.getPasswordTxtFd().getText();
+			String username = this.registerscreen.getUsernameTxtFd().getText();
+			
+			String message = this.decryptUtils.prepareIsRegisterPossible(username, password);
+			this.serverConnection.sendMessage(message);
+			
 		}
 		else if(e.getSource() == registerscreen.getCancelBtn()) {
 			this.gamestate = GamestateEnum.startscreen;

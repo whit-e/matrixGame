@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
-import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +42,6 @@ public class Inputfield {
 		int maxCharBound = (int)(new TextLayout(String.valueOf(currentWord), g.getFont(), new FontRenderContext(g.getFont().getTransform(),false,false)).getBounds().getWidth());
 		if(maxCharBound+100>gamescreen.getContainer().getWidth()) {
 			g.setFont(new Font(g.getFont().getName(), g.getFont().getStyle(), newSize--));
-			return checkForCharSize(g);
 		};
 		return g;
 	}

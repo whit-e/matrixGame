@@ -15,30 +15,29 @@ public class ServerConnection {
 
 	private Socket serverConnection;
 	
+	private OutputStream out;
+	private PrintWriter writer;
+	private InputStream in;
+	private BufferedReader reader;
+	
 	public ServerConnection() {
 		
 		try {
 			
 			this.serverConnection = new Socket("localhost", Server.serverPort);
 			
-			OutputStream out = this.serverConnection.getOutputStream();
-			PrintWriter writer = new PrintWriter(out);
+			out = this.serverConnection.getOutputStream();
+			writer = new PrintWriter(out);
 			
-			InputStream in = this.serverConnection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			in = this.serverConnection.getInputStream();
+			reader = new BufferedReader(new InputStreamReader(in));
 			
 			
 			// "insertUsername~~~max~~username
 			// " ".startsWith(insertUsername) -> insertUsername(string.split(~~))
 			
-			
 			// isUserAvailable~~~max
 			// startsWith.... -> sendeNachricht(users.contains("max"));
-			writer.println("max");
-			writer.flush();
-			
-			writer.close();
-			reader.close();
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -48,6 +47,20 @@ public class ServerConnection {
 		
 	}
 	
+	public void sendMessage(String message) {
+		writer.println(message);
+		writer.flush();
+		writer.close();
+	}
+	
+	public void getMessage() {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

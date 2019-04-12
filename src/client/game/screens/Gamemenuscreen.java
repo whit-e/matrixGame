@@ -1,5 +1,6 @@
 package client.game.screens;
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -55,6 +56,7 @@ public class Gamemenuscreen {
 	
 	public void addComponents() {
 		this.container.add(componentHolder);
+		this.container.setLayout(new FlowLayout());
 	}
 	
 	public void removeComponents() {
