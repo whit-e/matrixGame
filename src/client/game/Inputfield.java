@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import client.game.screens.Gamescreen;
-import client.utils.FontUtils;
 
 
 public class Inputfield {
@@ -21,9 +20,7 @@ public class Inputfield {
 	//indicates the position in the currentWord
 	private int currentPosition; 
 	//The Spacing between each Char (at Drawing)
-	private final double charSpacing = 0.1;
-	private Font font; 
-	private final int MAXFONTSIZE = 70;
+	private final double charSpacing = 0.5;
 	private Gamescreen gamescreen;
 	
 	
@@ -35,51 +32,26 @@ public class Inputfield {
 	public Inputfield(Gamescreen gamescreen) {
 		this.gamescreen = gamescreen;
 		this.word = gamescreen.getSoughtWord();
-		font = checkForCharSize();
 		prepareWord();
 	}
 	
-	
-	//Checks if the String full of w would be larger as the screen if so it resizes the Font till it fit´s again
-	private Font checkForCharSize() {
-		Map<TextAttribute, Object> attributes = new HashMap<>();
-		attributes.put(TextAttribute.TRACKING, charSpacing);
-		//Test Font till we install the real Font 
-		Font f = gamescreen.getContainer().getFontUtils().getMatrixGameFont().deriveFont(attributes);
+	//maximale bounds benutzen
+	private Graphics checkForCharSize(Graphics g) {
+		Font f = g.getFont();
 		int newSize = f.getSize();
-<<<<<<< HEAD
 		int maxCharBound = (int)(new TextLayout(String.valueOf(currentWord), g.getFont(), new FontRenderContext(g.getFont().getTransform(),false,false)).getBounds().getWidth());
 		if(maxCharBound+100>gamescreen.getContainer().getWidth()) {
 			g.setFont(new Font(g.getFont().getName(), g.getFont().getStyle(), newSize--));
 		};
 		return g;
-=======
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < word.length();i++) {
-			sb.append('w');
-		}
-		int maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
-		//Makes the Font smaller till it fit´s on the screen (with a padding of 50 each side)
-		if(maxCharBound+120>gamescreen.getContainer().getWidth()) {
-			while(maxCharBound+100>gamescreen.getContainer().getWidth()) {
-				f = new Font(f.getName(), f.getStyle(), newSize--).deriveFont(attributes);
-				maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
-			}
-		//Expands the Font till it stays on a good Size BUT not larger than MAXFONTSIZE
-		}
-		else {
-			while(maxCharBound+100 <gamescreen.getContainer().getWidth()-100 && f.getSize()<=MAXFONTSIZE) {
-				f = new Font(f.getName(), f.getStyle(), newSize++).deriveFont(attributes);
-				maxCharBound = (int)(new TextLayout(sb.toString(), f, new FontRenderContext(f.getTransform(),false,false)).getBounds().getWidth());
-			}
-		}
-		return f;
->>>>>>> branch 'master' of https://github.com/MaxiHotzelt/matrixGame.git
 	}
 	
 	public void render(Graphics g) {
-		g.setFont(font);
-//		g.getFontMetrics();
+		Map<TextAttribute, Object> attributes = new HashMap<>();
+		attributes.put(TextAttribute.TRACKING, charSpacing);
+		g.setFont(g.getFont().deriveFont(attributes));
+		g.getFontMetrics();
+		g = checkForCharSize(g);
 		int x = gamescreen.getContainer().getWidth()/2-(int)(new TextLayout(String.valueOf(currentWord), g.getFont(), new FontRenderContext(g.getFont().getTransform(),false,false)).getBounds().getWidth()/2);
 		int y = gamescreen.getContainer().getHeight()-(gamescreen.getContainer().getHeight()/15);
 		g.setColor(Color.white);
