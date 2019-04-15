@@ -1,5 +1,6 @@
 package client.game.screens;
 
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -18,7 +19,7 @@ public class Startscreen {
 	
 	//needed components
 	private JTextField usernameTxtFd;
-	private JPasswordField passwordPwFd;
+	private JPasswordField passwordFd;
 	
 	private JLabel usernameLbl;
 	private JLabel passwordLbl;
@@ -30,6 +31,8 @@ public class Startscreen {
 	//getter
 	public JButton getRegisterBtn() { return registerBtn; }
 	public JButton getLoginBtn() { return loginBtn; }
+	public JTextField getUserNameTxtFd() { return this.usernameTxtFd; }
+	public JTextField getPasswordFd() { return this.passwordFd; }
 	
 	private Container container;
 	
@@ -46,7 +49,7 @@ public class Startscreen {
 		this.registerContainer = new JPanel();
 		
 		this.usernameTxtFd = new JTextField("", 15);
-		this.passwordPwFd = new JPasswordField("", 15);
+		this.passwordFd = new JPasswordField("", 15);
 		
 		this.usernameLbl = new JLabel("BENUTZERNAME");
 		this.passwordLbl = new JLabel("PASSWORT");
@@ -60,11 +63,12 @@ public class Startscreen {
 		this.registerBtn.addActionListener(container);
 		this.loginBtn.addActionListener(container);
 
+		positionComponents();
+		
+		//config compononents
 		usernameLbl.setFont(this.container.getFontUtils().getMatrixFont().deriveFont(20F));
 		passwordLbl.setFont(this.container.getFontUtils().getMatrixFont().deriveFont(20F));
 		
-		
-		//config compononents
 		this.componentHolder.setLayout(new GridLayout(2, 1, 10, 10));
 		this.componentHolder.setOpaque(false);
 		
@@ -80,7 +84,7 @@ public class Startscreen {
 		this.loginContainer.add(usernameTxtFd);
 		
 		this.loginContainer.add(passwordLbl);
-		this.loginContainer.add(passwordPwFd);
+		this.loginContainer.add(passwordFd);
 		
 		this.loginContainer.add(loginBtn);
 		
@@ -90,10 +94,39 @@ public class Startscreen {
 		this.componentHolder.add(loginContainer);
 		this.componentHolder.add(registerContainer);
 		//-----------------------------------
+		
+		
 	}
 	
+	private void positionComponents() {
+		int frameWidth = this.container.getSettings().getResolution().getWidth();
+		int frameHeight = this.container.getSettings().getResolution().getHeight();
+		
+		//the component holder should be positioned 30% from the top (y) and 50% from the left side (x)
+		int holderPosX = frameWidth/100 * 50;
+		int holderPosY = frameHeight/100 * 30;
+		
+		this.componentHolder.setBounds(holderPosX, holderPosY, 500, 200);
+	}
+	
+	public void render(Graphics g) {
+		g.setFont(this.container.getFontUtils().getMatrixFont().deriveFont(50F));
+		
+		String heading = "t THE MATRIX GAME u";
+		
+		int frameWidth = this.container.getSettings().getResolution().getWidth();
+		int frameHeight = this.container.getSettings().getResolution().getHeight();
+		
+		//the component holder should be positioned 30% from the top (y) and 50% from the left side (x)
+		int holderPosX = frameWidth/100 * 50 - g.getFontMetrics().stringWidth(heading)/2;
+		int holderPosY = frameHeight/100 * 15 + g.getFontMetrics().getHeight()/2;
+		
+		g.drawString(heading, holderPosX, holderPosY);
+	}
 	
 	public void addComponents() {
+		this.container.setLayout(null);
+		
 		this.container.add(componentHolder);
 	}
 	

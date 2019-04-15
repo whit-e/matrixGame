@@ -1,6 +1,7 @@
 package client.game.screens;
 
 
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -91,6 +92,8 @@ public class Registerscreen implements FocusListener{
 	}
 	
 	public void addComponents() {
+		this.container.setLayout(new FlowLayout());
+		
 		container.add(this.componentHolder);
 	}
 	

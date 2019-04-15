@@ -5,6 +5,7 @@ public class PasswortDecrypter {
  * Benötigt das Passwort beim erstellen der Klasse
  */
 	private String decryptedPassword;
+	
 	public PasswortDecrypter() {
 		
 	}
