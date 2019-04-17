@@ -5,15 +5,19 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import server.utils.DecryptUtils;
+
 public class DatabaseConnection {
 	
+	//attributes 
 	private Connection connection;
+	private DecryptUtils decryptUtils;
 	private ResultSet result;
 	
 	private boolean isConnected = false;
 	
 	public DatabaseConnection() {
-		
+		this.decryptUtils = new DecryptUtils();
 	}
 	
 	public void connect() {
@@ -75,23 +79,21 @@ public class DatabaseConnection {
 		try {
 			result = connection.createStatement().executeQuery(
 					"select userName, password from user " +
-					"where userName = '" + username + "' and password = '" + password + "'"
+					"where userName = '" + decryptUtils.decryptUsername(username) + "' and password = '" + password + "'"
 			);
 			
-			boolean returner = false;
+			boolean isDataCorrect = false;
 			while(result.next())  {
 				if(
-					result.getString(1).equals(username) && 
+					result.getString(1).equals(decryptUtils.decryptUsername(username)) && 
 					result.getString(2).equals(password)
 				) {
-					System.out.println(true);
-					return true;
+					isDataCorrect = true;
 				} else {
-					System.out.println(false);
-					return false;
+					isDataCorrect = false;
 				}
 			}
-			return returner;
+			return isDataCorrect;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import server.database.DatabaseConnection;
 import server.database.DatabaseConnectionMock;
@@ -11,8 +12,10 @@ public class Server {
 	public static int serverPort = 1337;
 	private ServerSocket server;
 	private DatabaseConnection databaseConnection;
+	private Socket socket;
 	
 	public DatabaseConnection getDatabase() { return this.databaseConnection; }
+	public Socket getSocket() { return this.socket; }
 	
 	public Server() {
 		
@@ -23,9 +26,6 @@ public class Server {
 			this.databaseConnection = new DatabaseConnectionMock();
 		}
 		
-		
-		
-	
 	}
 	
 	
@@ -43,7 +43,12 @@ public class Server {
 	public void waitForClient() {
 		while(true) {
 			try {
-				new SocketThread(server.accept()).start();
+				System.out.println("Warte auf Client...");
+				
+				socket = server.accept();
+				new ServerSocketThread(this).start();
+				
+				System.out.println("Neuer Client:" + socket);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,18 +1,18 @@
 package client.utils;
 
-public class PasswortDecrypter {
+public class PasswortEncrypter {
 /*
  * Benötigt das Passwort beim erstellen der Klasse
  */
-	private String decryptedPassword;
+	private String encryptedPassword;
 	
-	public PasswortDecrypter() {
+	public PasswortEncrypter() {
 		
 	}
 	
-	public String decryptPassword(String pw) {
+	public String encryptPassword(String pw) {
 		padPw(pw);
-		return decryptedPassword;
+		return encryptedPassword;
 	}
 	
 	//Wandelt das passwort ins Binärsystem um und padded es auf 512 zeichen
@@ -116,6 +116,6 @@ public class PasswortDecrypter {
 	private void createHexCode(String[] xOrArray) {
 		StringBuilder sb = new StringBuilder();
 		for(String s: xOrArray) {sb = sb.append(Integer.toHexString(Integer.parseInt(s,2)));}
-		this.decryptedPassword = sb.toString();
+		this.encryptedPassword = sb.toString();
 	}
 }

@@ -2,31 +2,16 @@ package client.utils;
 
 public class EncryptUtils {
 	
-	private String loginInfo;
-	private String registerInfo;
-	private PasswortDecrypter pwEncrypter;
+
+	private PasswortEncrypter pwEncrypter;
 	
 	
 	public EncryptUtils() {
-		this.pwEncrypter = new PasswortDecrypter();
+		this.pwEncrypter = new PasswortEncrypter();
 	}
 	
-	public String prepareLogin(String username, String password) {
-		
-		this.loginInfo = "login~~~" + encryptUsername(username) + "~~" + pwEncrypter.decryptPassword(password);
-		return loginInfo;
-	}
-	
-	public String prepareRegister(String username, String password) {
-		
-		this.registerInfo = "register~~~" + encryptUsername(username) + "~~" + pwEncrypter.decryptPassword(password);
-		return registerInfo;
-	}
-	
-	public String prepareIsRegisterPossible(String username, String password) {
-		
-		this.registerInfo = "isRegisterPossible~~~" + encryptUsername(username) + "~~" + pwEncrypter.decryptPassword(password);
-		return registerInfo;
+	public String encryptPassword(String password) {
+		return this.pwEncrypter.encryptPassword(password);
 	}
 	
 	/*

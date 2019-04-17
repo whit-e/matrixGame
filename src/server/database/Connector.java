@@ -3,14 +3,19 @@ package server.database;
 import java.sql.*;
 
 import server.User;
+import server.utils.DecryptUtils;
 
 
 public class Connector {
 	
+	private Connection connection;
+	private DecryptUtils decryptUtils;
+	
 	public Connector() {
+		this.decryptUtils = new DecryptUtils();
+		
 		connect();
 	}
-	private Connection connection;
 	
 	private void connect() {
 		String url = "jdbc:mysql://localhost:3306/test?serverTimezone=UTC";
@@ -68,8 +73,27 @@ public class Connector {
 		}
 		return false;
 	}
-	//login 
 	
+	public boolean checkLoginData(String username, String password) {
+		boolean isDataCorrect = false;
+		
+		try {
+			Statement st = connection.createStatement();
+			String statement = "SELECT * FROM user WHERE name ='" + decryptUtils.decryptUsername(username) + "' AND password ='" + password + "'";
+			ResultSet rs =  st.executeQuery(statement);
+			if(rs.wasNull()) {
+				isDataCorrect = false;
+			} else {
+				isDataCorrect = true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return isDataCorrect;
+	}
+	
+	//login 
 	public User login(String userName, String decryptedPassword) {
 		try {
 			Statement st = connection.createStatement();

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import client.game.GamestateEnum;
-import client.game.ServerConnection;
+import client.game.ClientSocket;
 import client.game.Settings;
 import client.utils.EncryptUtils;
 import client.utils.FileUtils;
@@ -32,10 +32,10 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	private Gamemenuscreen gamemenuscreen;
 	private CreateLobbyscreen createlobbyscreen;
 	
-	private ServerConnection serverConnection;
+	private ClientSocket clientSocket;
 	private FontUtils fontUtils;
 	private FileUtils fileUtils;
-	private EncryptUtils decryptUtils;
+	private EncryptUtils encryptUtils;
 	
 
 	private GamestateEnum gamestate;
@@ -46,10 +46,10 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	public Startscreen getStartscreen() { return this.startscreen; }
 	public Registerscreen getRegisterscreen() { return this.registerscreen; }
 	
-	public ServerConnection getServerConnection() { return this.serverConnection; }
+	public ClientSocket getServerConnection() { return this.clientSocket; }
 	public FontUtils getFontUtils() { return this.fontUtils; }
 	public FileUtils getFileUtils() { return this.fileUtils; }
-	public EncryptUtils getDecryptUtils() { return this.decryptUtils; }
+	public EncryptUtils getDecryptUtils() { return this.encryptUtils; }
 	
 	public GamestateEnum getGamestate() { return this.gamestate; }
 	public GridBagConstraints getGridBagCon() { return this.gridBagConstraints; }
@@ -79,9 +79,9 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 		this.gamescreen = new Gamescreen(this);
 		this.gamemenuscreen = new Gamemenuscreen(this);
 		this.createlobbyscreen = new CreateLobbyscreen(this);
-		this.decryptUtils = new EncryptUtils();
+		this.encryptUtils = new EncryptUtils();
 		
-		this.serverConnection = new ServerConnection();
+		this.clientSocket = new ClientSocket();
 		
 		
 		this.timer = new Timer(1, new ActionListener() {
@@ -181,10 +181,8 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 			String username = this.startscreen.getUserNameTxtFd().getText();
 			
 			//send message with encrypted username and password to server
-			String message = this.decryptUtils.prepareIsRegisterPossible(username, password);
-			this.serverConnection.sendMessage(message);
-			
-			if(true) {
+			this.clientSocket.getMessageProtocol().prepareLogin(username, password);
+			if(this.clientSocket.getMessageProtocol().isLoginSuccesful()) {
 				System.out.println("Login was succesful");
 				this.gamestate = GamestateEnum.gamemenuscreen;
 			} else {
@@ -203,8 +201,7 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 			String password = this.registerscreen.getPasswordTxtFd().getText();
 			String username = this.registerscreen.getUsernameTxtFd().getText();
 			
-			String message = this.decryptUtils.prepareIsRegisterPossible(username, password);
-			this.serverConnection.sendMessage(message);
+			this.clientSocket.getMessageProtocol().prepareIsRegisterPossible(username, password);
 			
 		}
 		else if(e.getSource() == registerscreen.getCancelBtn()) {
@@ -242,6 +239,8 @@ public class Container extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(gamestate == GamestateEnum.gamescreen) {
+			
+			//handles the messages entered from the inputfield
 			if(String.valueOf(e.getKeyChar()).matches("[a-zA-Z]")) {
 				this.gamescreen.getInputfield().addCharToArr(e.getKeyChar());
 			} else if(e.getKeyCode() == 8) {

@@ -1,15 +1,15 @@
 package server;
 
-import client.utils.PasswortDecrypter;
+import client.utils.PasswortEncrypter;
 import server.database.Connector;
 
 public class DatenBankManager {
 
 	public static void main(String[] args) {
 		
-		PasswortDecrypter pwCrypt = new PasswortDecrypter();
+		PasswortEncrypter pwCrypt = new PasswortEncrypter();
 		
-		String decryptedPW = pwCrypt.decryptPassword("apfelkuchen");
+		String decryptedPW = pwCrypt.encryptPassword("apfelkuchen");
 		Connector connector = new Connector();
 //		if(connector.addNewUser("kleinerTesto", decryptedPW)==1) {
 //			System.out.println("User wurde erfolgreich angelegt");
